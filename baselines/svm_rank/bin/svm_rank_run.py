@@ -126,79 +126,81 @@ def OutputFiles():
 				FOUT.write('%.4f\t'%PREC[i])
 			FOUT.write('%.4f\t\n'%Map[ipos1+subset_name])
 	return
+if __name__ == '__main__':					
+	DT={'0':'Mq2007','1':'Mq2008','2':'OHSUMED'}
+	Msr={'0':'MAP','1':'NDCG'}
+	#ipos2={'0':'test','1':'vali','2':'train'}
+	iMaxPosition=10
+	
+	dataset = DT.get(sys.argv[1])
+	msr = Msr.get(sys.argv[2])
+	#dataset=DT.get(raw_input('pls choose dataset(0:Mq2007,1:Mq2008,2:OHSUMED):\n'))
+	#msr=Msr.get(raw_input('pls choose measure (0:MAP,1:NDCG):\n'))
+
+	learn_tools_name='svm_rank_learn'
+	classify_tools_name='svm_rank_classify'
+	algthm_name='svm_rank'
 		
-DT={'0':'Mq2007','1':'Mq2008','2':'OHSUMED'}
-Msr={'0':'MAP','1':'NDCG'}
-#ipos2={'0':'test','1':'vali','2':'train'}
-iMaxPosition=10
+	p=PathManager(dataset,algthm_name)
 
-dataset=DT.get(raw_input('pls choose dataset(0:Mq2007,1:Mq2008,2:OHSUMED):\n'))
-msr=Msr.get(raw_input('pls choose measure (0:MAP,1:NDCG):\n'))
+	pth_bslns=p.getPath('path_baselines')
+	pth_evlt=p.getPath('path_evaluation')
+	pth_dataset=p.getPath('path_dataset')
+	pth_data=p.getPath('path_data')
 
-learn_tools_name='svm_rank_learn'
-classify_tools_name='svm_rank_classify'
-algthm_name='svm_rank'
-	
-p=PathManager(dataset,algthm_name)
+	tls_learn=os.path.join(p.getPath('path_code'),learn_tools_name)
+	tls_classify=os.path.join(p.getPath('path_code'),classify_tools_name)
+	pth_eval=p.getPath('path_eval')
+	pth_log=p.getPath('path_log')
 
-pth_bslns=p.getPath('path_baselines')
-pth_evlt=p.getPath('path_evaluation')
-pth_dataset=p.getPath('path_dataset')
-pth_data=p.getPath('path_data')
+	#import evaluate.py
+	if not pth_evlt in sys.path:
+		sys.path.append(pth_evlt)
+	if not 'evaluate' in sys.modules:
+		evaluate = __import__('evaluate')
+	else:
+		eval('import evaluate')
+		evaluate= eval('reload(evaluate)')
 
-tls_learn=os.path.join(p.getPath('path_code'),learn_tools_name)
-tls_classify=os.path.join(p.getPath('path_code'),classify_tools_name)
-pth_eval=p.getPath('path_eval')
-pth_log=p.getPath('path_log')
+	Map={}
+	PrecAtN={}
+	MeanNdcg={}
+	Ndcg={}
 
-#import evaluate.py
-if not pth_evlt in sys.path:
-    sys.path.append(pth_evlt)
-if not 'evaluate' in sys.modules:
-    evaluate = __import__('evaluate')
-else:
-    eval('import evaluate')
-    evaluate= eval('reload(evaluate)')
+	'''command_train=tls+' train -data %s -model %s -round %d -measure '+str(msr)
+	command_test=tls+' test -data %s -model %s -output %s -round %d'''
 
-Map={}
-PrecAtN={}
-MeanNdcg={}
-Ndcg={}
-
-'''command_train=tls+' train -data %s -model %s -round %d -measure '+str(msr)
-command_test=tls+' test -data %s -model %s -output %s -round %d'''
-
-command_train=tls_learn+' -c %f -e 0.001 -l 1 %s %s'
-command_test=tls_classify+' %s %s %s'
-#message to be logged 	
+	command_train=tls_learn+' -c %f -e 0.1 -# 5000 %s %s'
+	command_test=tls_classify+' %s %s %s'
+	#message to be logged 	
 
 
-	
+		
 
-try:
-	#if LOGFILENAME is None:
-	t = time.strftime('%m%d_%H%M',time.localtime(time.time()))
-	LOGFILENAME=os.path.join(pth_log,'%s.log'%t)
-	F_log=open(LOGFILENAME,'w')
-finally:
-	if not F_log:
-		print 'Invalid command line.\n'
-		print 'Open \flog\' failed.\n'
-		F_log.close()
-		exit -2
-saveout=sys.stdout
-sys.stdout=F_log
-	
+	try:
+		#if LOGFILENAME is None:
+		t = time.strftime('%m%d_%H%M',time.localtime(time.time()))
+		LOGFILENAME=os.path.join(pth_log,'%s.log'%t)
+		F_log=open(LOGFILENAME,'w')
+	finally:
+		if not F_log:
+			print 'Invalid command line.\n'
+			print 'Open \flog\' failed.\n'
+			F_log.close()
+			exit -2
+	saveout=sys.stdout
+	sys.stdout=F_log
+		
 
-print 'pars\n%s\n'%('c')
-validation(msr,dataset)
+	print 'pars\n%s\n'%('c')
+	validation(msr,dataset)
 
-t_OutputFile = time.strftime('%m%d_%H%M',time.localtime(time.time()))
-print '\nat %s begin to write into files..\t'%(t_OutputFile)
-OutputFiles()
+	t_OutputFile = time.strftime('%m%d_%H%M',time.localtime(time.time()))
+	print '\nat %s begin to write into files..\t'%(t_OutputFile)
+	OutputFiles()
 
-sys.stdout=saveout
-F_log.close()
+	sys.stdout=saveout
+	F_log.close()
 
 
 #OutputDatabase()

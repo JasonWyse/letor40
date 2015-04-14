@@ -21,7 +21,7 @@ class PathManager(object):
 		self.path_dataset = os.path.join(self.path_datasets,self.dataset)       #current dataset
 		self.path_algorithm = os.path.join(self.path_baselines,self.algorithm) 
 		self.path_code = os.path.join(self.path_algorithm,'source_code')        
-		self.path_data = os.path.join(self.path_algorithm,'data')
+		self.path_data = os.path.join(self.path_algorithm,'data',self.dataset)
 		self.path_localdata = os.path.join(self.path_algorithm,'localdatasets')
 		self.path_eval = os.path.join(self.path_algorithm,'eval')
 		self.path_log = os.path.join(self.path_algorithm,'log')
