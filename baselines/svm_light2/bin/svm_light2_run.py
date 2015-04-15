@@ -170,7 +170,7 @@ if __name__ == '__main__':
 	'''command_train=tls+' train -data %s -model %s -round %d -measure '+str(msr)
 	command_test=tls+' test -data %s -model %s -output %s -round %d'''
 
-	command_train=tls_learn+' -c %f -z p -e 0.1 -# 1500 %s %s'
+	command_train=tls_learn+' -c %f -z p -e 0.1 -# 1000 %s %s'
 	command_test=tls_classify+' %s %s %s'
 	#message to be logged 	
 

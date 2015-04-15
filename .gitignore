@@ -1,6 +1,6 @@
 datasets/
 log/
-data/
+FacSVM_Rank/data/
 baselines/FacSVM_Rank/eval/
 performance_outlook/input/
 performance_outlook/output/

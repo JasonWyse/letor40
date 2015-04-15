@@ -1,0 +1,10 @@
+Fold4
+C:0.1
+
+ ite:0
+
+ eta:1e-06
+
+ col_size:50
+
+ batch_size:50
