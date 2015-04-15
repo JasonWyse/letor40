@@ -5,4 +5,4 @@ baselines/FacSVM_Rank/eval/
 performance_outlook/input/
 performance_outlook/output/
 saved_model/
-
+*.pyc
