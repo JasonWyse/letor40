@@ -114,6 +114,10 @@ def doLine(line,lineNum):
 		sys.exit(-1)
 
 def readFile(fileName):
+	global ndcg, Map, result
+	ndcg = {}
+	Map = {}
+	result = [0]*12
 	lineNum = 1
 	with open(fileName) as fin:
 		for line in fin:
@@ -176,7 +180,7 @@ def getFile(dir):
 def run(baselines):
 	#algorithms = getFile(baselines)
 	algorithms = []
-	print baselines
+	#print baselines
 	for i in os.listdir(baselines):
 			if os.path.isdir(os.path.join(baselines,i)):
 				algorithms.append(os.path.join(baselines,i))

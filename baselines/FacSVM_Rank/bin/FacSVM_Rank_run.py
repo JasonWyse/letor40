@@ -4,7 +4,7 @@ import subprocess
 import sys
 #import path
 import logging
-import mysql
+#import mysql
 from path import PathManager
 import time
 
@@ -57,10 +57,10 @@ def validation(msr,dataset):
 		
 		################################different parts for distinct algorithm###################################################	
 		##-c 50 -C 1 -e 1e-6 -s 7 -b 10 -i 100
-		for ite in range(0,50+1,1):#in[100,200,300,500,1000]:
-			for eta in[1e-6]:#[1e-6,1e-6,1e-6,1e-6,1e-6,1e-6,]
-				for col_size in[10,5]:#[50,100,200,500,1000,5000]
-					for c in[0.1,1]:#[0.0001,0.001,0.01,0.1,1,10,100]
+		for ite in range(0,1000+1,1):#in[100,200,300,500,1000]:
+			for eta in[1e-7]:#[1e-6,1e-6,1e-6,1e-6,1e-6,1e-6,]
+				for col_size in[10,20,50]:#[50,100,200,500,1000,5000]
+					for c in[0.001,0.01,0.1]:#[0.0001,0.001,0.01,0.1,1,10,100]
 						for batch_size in[10,20,50]:#[10,20,50,100,200]
 							#for rate in [0.00001,0.0001,0.001,0.01]:
 							#use the "train.txt" file to learn the model
