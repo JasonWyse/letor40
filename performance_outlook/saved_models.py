@@ -129,17 +129,17 @@ def readFile(fileName):
 	average()
 
 
-def save(filename,timestr):
+def save(filename,timestr,modeltime):
 	global result
 	flag = False
 	if not os.path.exists(filename):
 		flag = True
 	with open(filename,'a') as fout:
 		if flag :
-			fout.write("time\tNDCG@1\tNDCG@2\tNDCG@3\tNDCG@4\tNDCG@5\t"+\
+			fout.write("time\tmodel_time\tNDCG@1\tNDCG@2\tNDCG@3\tNDCG@4\tNDCG@5\t"+\
 				"NDCG@6\tNDCG@7\tNDCG@8\tNDCG@9\tNDCG@10\tMeanNDCG\tMap\n")
 			flag = False
-		fout.write("%s\t"%timestr)
+		fout.write("%s\t%s\t"%(timestr,modeltime))
 		for tmp in result:
 			fout.write("%.4f\t"%tmp)
 		fout.write("\n")
@@ -163,12 +163,14 @@ def addRecord(basepath,datasetname):
 			t1 = lastLineTime(os.path.join(dstPath,"msr_map"))
 			if timestr > t1:
 				readFile(os.path.join(path,i))
-				save(os.path.join(dstPath,"msr_map"),timestr)
+				modeltime = getModelTime(basepath,datasetname)
+				save(os.path.join(dstPath,"msr_map"),timestr,modeltime)
 		elif "NDCG" in i:
 			t1 = lastLineTime(os.path.join(dstPath,"msr_ndcg"))
 			if timestr > t1:
 				readFile(os.path.join(path,i))
-				save(os.path.join(dstPath,"msr_ndcg"),timestr)
+				modeltime = getModelTime(basepath,datasetname)
+				save(os.path.join(dstPath,"msr_ndcg"),timestr,modeltime)
 
 def getFile(dir):
 	files = []
